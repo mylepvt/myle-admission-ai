@@ -5,6 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>MYLE — Admission Intelligence Platform</title>
 <meta name="description" content="Recover up to 20% of lost admissions. MYLE shows schools and coaching institutes exactly where admissions are leaking — before they disappear.">
+<!-- Social / Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="MYLE — Admission Intelligence Platform">
+<meta property="og:description" content="Recover up to 20% of lost admissions. See exactly where your admission funnel is leaking — before it disappears.">
+<meta property="og:url" content="https://mylepvt.github.io/myle-admission-ai/">
+<meta property="og:site_name" content="MYLE">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="MYLE — Admission Intelligence Platform">
+<meta name="twitter:description" content="Recover up to 20% of lost admissions. See exactly where your admission funnel is leaking — before it disappears.">
+<meta name="theme-color" content="#08080A">
+<!-- Favicon: gold dot mark -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2308080A'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%23d6b36b'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -14,6 +26,21 @@
 html { scroll-behavior: smooth; }
 body { background: var(--bg); color: var(--text); font-family: 'IBM Plex Sans', -apple-system, sans-serif; min-height: 100vh; overflow-x: hidden; }
 a { color: inherit; text-decoration: none; }
+::placeholder { color:#5C5C64; opacity:1; }
+
+/* ── Scroll reveal ── */
+.reveal { opacity:0; transform:translateY(26px); transition:opacity .7s cubic-bezier(.22,.61,.36,1), transform .7s cubic-bezier(.22,.61,.36,1); will-change:opacity,transform; }
+.reveal.in { opacity:1; transform:none; }
+
+/* ── Sticky nav ── */
+.nav-wrap { position:sticky; top:0; z-index:50; background:rgba(8,8,10,.72); -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); border-bottom:1px solid transparent; transition:border-color .3s, background .3s; }
+.nav-wrap.scrolled { border-bottom-color:rgba(255,255,255,.07); background:rgba(8,8,10,.86); }
+
+/* ── Respect reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; scroll-behavior:auto !important; }
+  .reveal { opacity:1 !important; transform:none !important; }
+}
 
 /* ── Ambient layers ── */
 .layer-grid {
@@ -275,23 +302,27 @@ footer { position:relative;z-index:2;border-top:1px solid rgba(255,255,255,.07);
 .footer-links a:hover { color:#E8E8ED; }
 .footer-copy { font-size:13px;color:#4E4E56; }
 
-/* ── WhatsApp float button ── */
+/* ── WhatsApp float button (compact FAB, expands to pill on hover) ── */
 .wa-float {
-  position:fixed; right:24px; bottom:24px; z-index:90;
-  display:flex; align-items:center; gap:10px;
+  position:fixed; right:24px; bottom:24px; z-index:80;
+  display:flex; align-items:center; height:56px;
   background:#25D366; color:#06140C;
   font-family:'Sora',sans-serif; font-weight:600; font-size:15px;
-  padding:13px 20px 13px 16px; border-radius:100px;
+  padding:0 16px; border-radius:100px;
   box-shadow:0 10px 30px rgba(37,211,102,.35), 0 2px 8px rgba(0,0,0,.4);
   transition:transform .2s, box-shadow .2s;
 }
 .wa-float:hover { transform:translateY(-2px); box-shadow:0 14px 36px rgba(37,211,102,.45); }
-.wa-float svg { width:24px; height:24px; flex:none; }
-.wa-float .wa-text { white-space:nowrap; }
-@media (max-width:600px) {
-  .wa-float { right:16px; bottom:16px; padding:14px; }
+.wa-float svg { width:26px; height:26px; flex:none; }
+.wa-float .wa-text {
+  max-width:0; opacity:0; margin-left:0; overflow:hidden; white-space:nowrap;
+  transition:max-width .3s ease, opacity .25s ease, margin-left .3s ease;
+}
+.wa-float:hover .wa-text, .wa-float:focus-visible .wa-text { max-width:170px; opacity:1; margin-left:10px; }
+@media (hover:none) {            /* touch devices: icon-only, no hover expand */
   .wa-float .wa-text { display:none; }
 }
+@media (max-width:600px) { .wa-float { right:16px; bottom:16px; } }
 
 /* ── Modal ── */
 .modal-overlay { position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:20px; }
@@ -337,7 +368,7 @@ footer { position:relative;z-index:2;border-top:1px solid rgba(255,255,255,.07);
 <div class="layer-vignette"></div>
 
 <!-- ════ NAV ════ -->
-<div style="position:relative;z-index:10;">
+<div class="nav-wrap" id="navWrap">
   <nav class="nav">
     <div class="nav-logo">
       <div class="dot-pulse"></div>
@@ -377,8 +408,8 @@ footer { position:relative;z-index:2;border-top:1px solid rgba(255,255,255,.07);
     <a class="btn-ghost" href="#cta">Get Free Admission Analysis</a>
   </div>
   <div class="hero-stats">
-    <span><span class="num">68%</span> of enquiries never get a second follow-up</span>
-    <span><span class="num">3×</span> faster response with automation</span>
+    <span><span class="num" data-count="68" data-suffix="%">68%</span> of enquiries never get a second follow-up</span>
+    <span><span class="num" data-count="3" data-suffix="×">3×</span> faster response with automation</span>
   </div>
 
   <div class="cmd-card">
@@ -552,10 +583,10 @@ footer { position:relative;z-index:2;border-top:1px solid rgba(255,255,255,.07);
           <div class="d-meta">Academic Year 2026–27 · Live</div>
         </div>
         <div class="metric-tiles">
-          <div class="metric-tile"><div class="m-label">New Enquiries</div><div class="m-val">312</div><div class="m-badge up">▲ 18% this week</div></div>
-          <div class="metric-tile"><div class="m-label">Follow-Ups Due</div><div class="m-val">48</div><div class="m-badge warn">12 overdue</div></div>
-          <div class="metric-tile"><div class="m-label">Conversion Rate</div><div class="m-val">31.4%</div><div class="m-badge up">▲ 3.1 pts</div></div>
-          <div class="metric-tile"><div class="m-label">Admission Forecast</div><div class="m-val">1,180</div><div class="m-badge muted">±4% confidence</div></div>
+          <div class="metric-tile"><div class="m-label">New Enquiries</div><div class="m-val" data-count="312">312</div><div class="m-badge up">▲ 18% this week</div></div>
+          <div class="metric-tile"><div class="m-label">Follow-Ups Due</div><div class="m-val" data-count="48">48</div><div class="m-badge warn">12 overdue</div></div>
+          <div class="metric-tile"><div class="m-label">Conversion Rate</div><div class="m-val" data-count="31.4" data-suffix="%" data-decimals="1">31.4%</div><div class="m-badge up">▲ 3.1 pts</div></div>
+          <div class="metric-tile"><div class="m-label">Admission Forecast</div><div class="m-val" data-count="1180" data-grouped="1">1,180</div><div class="m-badge muted">±4% confidence</div></div>
           <div class="metric-tile gold"><div class="m-label">Pipeline Revenue</div><div class="m-val">₹2.4 Cr</div><div class="m-badge">Open opportunity</div></div>
         </div>
         <div class="dash-lower">
@@ -768,6 +799,66 @@ async function submitForm() {
     btn.textContent = 'Get My Free Audit';
   }
   function showErr(m) { errEl.textContent = m; errEl.style.display = 'block'; }
+}
+
+/* ── Sticky nav scrolled state ── */
+const navWrap = document.getElementById('navWrap');
+const onScroll = () => navWrap.classList.toggle('scrolled', window.scrollY > 8);
+window.addEventListener('scroll', onScroll, { passive:true });
+onScroll();
+
+/* ── Count-up animation ── */
+function countUp(el) {
+  const target   = parseFloat(el.dataset.count);
+  const suffix   = el.dataset.suffix || '';
+  const decimals = +(el.dataset.decimals || 0);
+  const grouped  = el.dataset.grouped === '1';
+  const dur = 1100, t0 = performance.now();
+  const fmtN = v => {
+    let s = decimals ? v.toFixed(decimals) : Math.round(v).toString();
+    if (grouped) s = (+s).toLocaleString('en-IN');
+    return s;
+  };
+  const tick = now => {
+    const p = Math.min((now - t0) / dur, 1);
+    const eased = 1 - Math.pow(1 - p, 3);
+    el.textContent = fmtN(target * eased) + suffix;
+    if (p < 1) requestAnimationFrame(tick);
+    else el.textContent = fmtN(target) + suffix;
+  };
+  requestAnimationFrame(tick);
+}
+
+/* ── Scroll reveal + trigger count-up ── */
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const revealSelectors = '.label,.section-h2,.hero-badge,.hero h1,.hero-sub,.hero-btns,.hero-stats,.cmd-card,.trust,.calc-grid,.problem-grid > *,.decay-chain,.myle-alert,.pillars,.features-grid > *,.dash-outer,.cmp-table,.testimonials > *,.cta-card';
+const revealEls = Array.from(document.querySelectorAll(revealSelectors));
+
+if (reduceMotion || !('IntersectionObserver' in window)) {
+  document.querySelectorAll('[data-count]').forEach(el => { el.textContent = (el.dataset.grouped==='1' ? (+el.dataset.count).toLocaleString('en-IN') : el.dataset.count) + (el.dataset.suffix||''); });
+} else {
+  revealEls.forEach((el, i) => {
+    el.classList.add('reveal');
+    el.style.transitionDelay = ((i % 4) * 80) + 'ms';
+  });
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      e.target.classList.add('in');
+      e.target.querySelectorAll?.('[data-count]').forEach(n => { if (!n.dataset.done) { n.dataset.done = '1'; countUp(n); } });
+      io.unobserve(e.target);
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  revealEls.forEach(el => io.observe(el));
+
+  // Count-up elements that aren't inside a reveal target (observe directly)
+  document.querySelectorAll('[data-count]').forEach(n => {
+    if (n.closest(revealSelectors)) return;
+    const io2 = new IntersectionObserver((es) => es.forEach(e => {
+      if (e.isIntersecting && !n.dataset.done) { n.dataset.done='1'; countUp(n); io2.disconnect(); }
+    }), { threshold: 0.5 });
+    io2.observe(n);
+  });
 }
 </script>
 </body>
