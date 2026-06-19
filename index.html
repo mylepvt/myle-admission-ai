@@ -678,11 +678,11 @@ footer { position:relative;z-index:2;border-top:1px solid rgba(255,255,255,.07);
         <h3>Request Free Audit</h3>
         <div id="formBox">
           <div class="form-row">
-            <div class="form-group"><label>Your name *</label><input type="text" id="f-name" placeholder="Rahul Sharma" required></div>
-            <div class="form-group"><label>Phone *</label><input type="tel" id="f-phone" placeholder="+91 98765 43210" required></div>
+            <div class="form-group"><label>Your name *</label><input type="text" id="f-name" autocomplete="name" required></div>
+            <div class="form-group"><label>Phone *</label><input type="tel" id="f-phone" autocomplete="tel" required></div>
           </div>
-          <div class="form-group"><label>Work email *</label><input type="email" id="f-email" placeholder="rahul@institution.com" required></div>
-          <div class="form-group"><label>Institution name</label><input type="text" id="f-institution" placeholder="DPS International School"></div>
+          <div class="form-group"><label>Work email *</label><input type="email" id="f-email" autocomplete="email" required></div>
+          <div class="form-group"><label>Institution name</label><input type="text" id="f-institution" autocomplete="organization"></div>
           <div class="form-group">
             <label>Institution type</label>
             <select id="f-type">
